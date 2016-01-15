@@ -1,5 +1,6 @@
 package dbms;
 
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -47,12 +48,17 @@ public class Cursor extends ArrayList<HashMap<String, String>> implements Cursor
     
     
     public void createItem(String[] values) {
-        HashMap<String, String> localMap = new HashMap<String, String>();
+        if ( values.length == 6 ) {
+        	HashMap<String, String> localMap = new HashMap<String, String>();
+        	//System.out.println(values.length);
         
-        for (int i = 0; i < cursorKeys.length; i++) {
-            localMap.put(cursorKeys[i], values[i]);
+        	for (int i = 0; i < cursorKeys.length; i++) {
+        		//System.out.println(i+"  " +cursorKeys[i]+"  "+ values[i]);
+        	
+        		localMap.put(cursorKeys[i], values[i]);
+        	}
+        	this.add(localMap);
         }
-        this.add(localMap);
     }
     
     
@@ -60,12 +66,17 @@ public class Cursor extends ArrayList<HashMap<String, String>> implements Cursor
     public void select() {
     	int size = 0;
     	String httpData = getHTTP("http://cityfinder.esy.es/javaapi.php?type=get&user=baydala");
-        System.out.println(httpData);
+        //System.out.println(httpData);
         
         HashMap<String, String> localMap = new HashMap<String, String>();
         
         String[] dataArray = httpData.split("#");
+        
+        
         String[] values = null;
+        
+        //System.out.println(dataArray.length);
+        
         for (int i = 0; i < dataArray.length; i++) {
             values = dataArray[i].split(";");
             this.createItem(values);
@@ -74,7 +85,7 @@ public class Cursor extends ArrayList<HashMap<String, String>> implements Cursor
         size = this.size();
         for (int i = 0; i < size; i++ ) {
         	this.printItemCursor(i);
-        	System.out.println("--------------------------------");
+        	System.out.println("-----------------");
         }
     }
     
@@ -85,7 +96,7 @@ public class Cursor extends ArrayList<HashMap<String, String>> implements Cursor
         try {
             local = this.get(pos);
             for (int i = 0; i < cursorKeys.length ; i++) {
-                System.out.println( cursorKeys[i] +":"+ local.get(cursorKeys[i]));
+                System.out.println( cursorKeys[i] +": "+ local.get(cursorKeys[i]));
                 
             }
         } catch (IndexOutOfBoundsException e) {
@@ -119,7 +130,15 @@ public class Cursor extends ArrayList<HashMap<String, String>> implements Cursor
     
     public void insert(int pos, String[] values) {}
     
-    public boolean isLast() {}
+    public boolean isLast() {
+    	return false;
+    }
+
+	@Override
+	public HashMap<String, String> getItem(int pos) {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
     
     
