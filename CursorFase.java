@@ -1,5 +1,7 @@
 package dbms;
 
+import java.util.HashMap;
+
 public interface CursorFase {
 
 	    public HashMap<String, String> getItem(int pos);
